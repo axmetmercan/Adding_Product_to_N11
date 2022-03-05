@@ -9,7 +9,7 @@ class N11:
         self.userName = userName
         self.userPassword = userPassword
 
-        self.driver = webdriver.Chrome(executable_path="driver/chromedriver")
+        self.driver = webdriver.Chrome(executable_path="driver/chromedriver.exe")
         self.driver.maximize_window()
         self.driver.get("https://so.n11.com/")
         time.sleep(3)
@@ -31,7 +31,7 @@ class N11:
 
         self.driver.get("https://so.n11.com/selleroffice/product/createProduct")
         termcolor.cprint("Lütfen Ürün Eklemek İstediğiniz Kategori Adını Yazınız: ", "green")
-        #category = input()
+        # category = input()
         category = "tül perde"
 
         time.sleep(5)
@@ -40,10 +40,12 @@ class N11:
         self.driver.find_element_by_css_selector("#searchCategoryButton > span").click()
         time.sleep(3)
         ### Dikkat Burası Değişim İsteyebilir / Kategori Seçim Alanı
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div[2]/div[2]/div/div[1]/table/tbody/tr/td/input").click()
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div[2]/div[2]/div/div[1]/table/tbody/tr/td/input").click()
         time.sleep(2)
         ###  Dikkat Burası Değişim İsteyebilir / Kategori Seçim Alanı
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div[2]/div[3]/div/table/tbody/tr/td[3]/button/span").click()
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div[2]/div[3]/div/table/tbody/tr/td[3]/button/span").click()
         time.sleep(5)
 
         # Ürün Adı
@@ -64,16 +66,23 @@ class N11:
 
         ## Fiyat Bilgileri Dolduruluyor İndirim Varsa Giriyor.
         self.driver.find_element_by_id("price").clear()
-        self.driver.find_element_by_id("price").send_keys("0")
+        time.sleep(2)
+        self.driver.find_element_by_id("price").send_keys(str(round(int(float(self.price) * 0.8))))
+        time.sleep(2)
+
         self.driver.find_element_by_id("priceDecimal").clear()
-        self.driver.find_element_by_id("priceDecimal").send_keys('02')
+        time.sleep(2)
+
+        self.driver.find_element_by_id("priceDecimal").send_keys('00')
+        time.sleep(2)
+
         self.driver.find_element_by_id("stock").send_keys(self.stocQuantity)
+        time.sleep(2)
 
         self.addTulCurtain()
 
-        if int(self.discountRate) > int("0"):
-            self.createDiscount()
-
+        # if int(self.discountRate) > int("0"):
+        #     self.createDiscount()
 
     def setProduct(self):
         self.driver.get("https://so.n11.com/selleroffice/product/products")
@@ -83,18 +92,18 @@ class N11:
         time.sleep(20)
         self.driver.find_element_by_id("idDataTable:27:j_id_7x").click()
         time.sleep(45)
-        self.driver.find_element_by_css_selector("#tabView\:optionalAttributeValueSelectorTable\:0\:j_id_ix > span.ui-button-text").click()
+        self.driver.find_element_by_css_selector(
+            "#tabView\:optionalAttributeValueSelectorTable\:0\:j_id_ix > span.ui-button-text").click()
         time.sleep(15)
         self.driver.find_element_by_id("tabView:customTextOptionsTable:0:j_id_hz").click()
         time.sleep(5)
-        self.driver.find_element_by_css_selector("#tabView\:optionalValuetable\:j_id_ka > div > div > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
+        self.driver.find_element_by_css_selector(
+            "#tabView\:optionalValuetable\:j_id_ka > div > div > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
         time.sleep(3)
         self.driver.find_element_by_css_selector("#tabView\:j_id_k7 > span.ui-button-text").click()
         time.sleep(15)
 
         self.addTulCurtain()
-
-
 
     ### İndirim Yapma Ekranını Oransal Yüzde Verir
     def createDiscount(self):
@@ -125,57 +134,66 @@ class N11:
     ## Başlangıç ve Bitiş Eni ni İnput Alıcak
     def addTulCurtain(self):
         # En Ekleme Oluştur
-        self.driver.find_element_by_css_selector("#addOtherOption > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
         time.sleep(3)
-        self.driver.find_element_by_id("customOptionalValue").send_keys("En")
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/table/tbody/tr[3]/td/table/tbody/tr/td[2]/button/span").click()
+        print('bura çalisti')
+        self.driver.find_element_by_css_selector(
+            "#addOtherOption > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
+        time.sleep(3)
+
+        self.driver.find_element_by_name("customOptionalValue").send_keys("En")
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/table/tbody/tr[3]/td/table/tbody/tr/td[2]/button/span").click()
         time.sleep(5)
         # self.driver.find_element_by_css_selector("#addOtherOption > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
         time.sleep(2)
 
         self.driver.find_element_by_id("customOptionalValue").send_keys("Pile")
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/table/tbody/tr[3]/td/table/tbody/tr/td[2]/button/span").click()
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/table/tbody/tr[3]/td/table/tbody/tr/td[2]/button/span").click()
         time.sleep(5)
-        self.driver.find_element_by_css_selector("#j_id362_j_id_gt > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
+        self.driver.find_element_by_css_selector(
+            "#j_id365_j_id_h6 > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default").click()
         time.sleep(2)
+        print('burası calisti')
         self.driver.find_element_by_id("customTextOption").send_keys("Boy(Max:260cm)")
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/span/table/tbody/tr[3]/td/button/span").click()
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[1]/span/table/tbody/tr[3]/td/button/span").click()
         """
         self.initialWidth = initialWidth
         self.lastWidth = lastWidth
         """
 
         termcolor.cprint("Başlangıc Enini Cm Olarak Giriniz: ", "blue")
-        self.initialWidth = input()
+        self.initialWidth = 80
         termcolor.cprint("Bitiş Enini Cm Olarak Giriniz: ", "blue")
-        self.lastWidth = input()
+        self.lastWidth = 600
 
         self.addingWidth(self.initialWidth, self.lastWidth)
         self.addingPile()
 
-        #Creating The Variants
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[3]/div/button/span").click()
+        # Creating The Variants
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[3]/div/button/span").click()
         time.sleep(13)
 
-
-        #Fazlalıkları Siler
-        for delete in ["2","3","4"]:
-            self.driver.find_element_by_css_selector("#optionalValuetable_data > tr:nth-child({}) > td.ui-selection-column > div > div > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default".format(delete)).click()
-        #Seçilen Varyantları Siler
-        self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[4]/div[2]/div/span/div[1]/div/table/tbody/tr/td[2]/button/span[2]").click()
+        # Fazlalıkları Siler
+        for delete in ["2", "3", "4"]:
+            self.driver.find_element_by_css_selector(
+                "#optionalValuetable_data > tr:nth-child({}) > td.ui-selection-column > div > div > div.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default".format(
+                    delete)).click()
+        # Seçilen Varyantları Siler
+        self.driver.find_element_by_xpath(
+            "/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[4]/div[2]/div/span/div[1]/div/table/tbody/tr/td[2]/button/span[2]").click()
         time.sleep(10)
 
         self.calculteTulPrice()
-
-
-
 
     ######### Tül Perde Fiyatı Hesaplar #######
     def calculteTulPrice(self):
         initialwidth = int(self.initialWidth)
         lastwidth = int(self.lastWidth)
 
-        quantitySku = (((lastwidth - initialwidth)/10)+1)*4
+        quantitySku = (((lastwidth - initialwidth) / 10) + 1) * 4
         initialSku = "1"
         lastSku = int(quantitySku)
 
@@ -184,23 +202,23 @@ class N11:
                 self.driver.find_element_by_id("optionalValuetable:{}:skuCurrencyAmount".format(initialSku)).clear()
 
                 if pile != 3:
-                    price = (((initialwidth/100)*pile)+20/100)*int(self.price)
+                    price = round(int((((initialwidth / 100) * pile) + 20 / 100) * int(self.price)))
                     price = int(price)
                     price = str(price)
-                    self.driver.find_element_by_id("optionalValuetable:{}:skuCurrencyAmount".format(initialSku)).send_keys(price)
+                    self.driver.find_element_by_id(
+                        "optionalValuetable:{}:skuCurrencyAmount".format(initialSku)).send_keys(price)
 
                     initialSku = int(initialSku)
                     initialSku += 1
                     initialSku = str(initialSku)
 
                 elif pile == 3:
-                    price = (initialwidth/100)*pile*int(self.price)
-                    price = int(price)
+                    price = (initialwidth / 100) * pile * int(self.price)
+                    price = round(int(price))
                     price = str(price)
 
-
-
-                    self.driver.find_element_by_id("optionalValuetable:{}:skuCurrencyAmount".format(str(initialSku))).send_keys(price)
+                    self.driver.find_element_by_id(
+                        "optionalValuetable:{}:skuCurrencyAmount".format(str(initialSku))).send_keys(price)
 
                     initialSku = int(initialSku)
                     initialSku += 1
@@ -208,18 +226,16 @@ class N11:
 
             initialwidth += 10
 
-
-
-
-
-
-
-    def addingWidth(self, initialWidth, lastWidth ):
-        self.driver.find_element_by_id('optionalAttributeValueSelectorTable:0:optionalValue').send_keys("Numune Talep Et(10 Cm)")
+    def addingWidth(self, initialWidth, lastWidth):
+        time.sleep(1.5)
+        self.driver.find_element_by_id('optionalAttributeValueSelectorTable:0:optionalValue').send_keys("100 cm birim fiyatı")
+        time.sleep(1.5)
+        print('birim fiyat gönderdi')
         self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[2]/div/div/table/tbody/tr/td[1]/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/button/span").click()
         time.sleep(1.5)
         while int(lastWidth) >= int(initialWidth):
-            self.driver.find_element_by_id("optionalAttributeValueSelectorTable:0:optionalValue").send_keys(initialWidth)
+            self.driver.find_element_by_id("optionalAttributeValueSelectorTable:0:optionalValue").send_keys(
+                initialWidth)
             self.driver.find_element_by_xpath("/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[2]/div/div/table/tbody/tr/td[1]/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/button/span").click()
             time.sleep(1.5)
             initialWidth = int(initialWidth)
@@ -229,5 +245,6 @@ class N11:
     def addingPile(self):
         for curtain in ["Pilesiz Düz Dikim", "Seyrek Pile (1'e 2)", "Orta Pile - (1'e 2.5)", "Sık Pile - (1'e 3)"]:
             self.driver.find_element_by_id("optionalAttributeValueSelectorTable:1:optionalValue").send_keys(curtain)
-            self.driver.find_element_by_xpath('/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[2]/div/div/table/tbody/tr/td[2]/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/button/span').click()
+            self.driver.find_element_by_xpath(
+                '/html/body/div[3]/form/div[2]/div/div/div[2]/div/div/div[3]/div/div[8]/div[2]/div/span/div[2]/div/div/table/tbody/tr/td[2]/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/button/span').click()
             time.sleep(0.85)
